@@ -36,7 +36,6 @@ exports.getstatus = function(req, res) {
         info['lab'] = query.lab;
         info['netid'] = query.netid;
         info['uid'] = query.uid;
-        info['scode'] = query.scode;
         if (!err) {
             info['submitMsg'] = ' submitted on ' + stats.mtime;
         }else{
@@ -69,10 +68,10 @@ extract_lab_num = function(lab) {
     return lab_num;
 };
 
-to_validate_user = function(netid, uid, scode) {
+to_validate_user = function(netid, uid) {
     var user_list = fs.readFileSync('userlist.txt', 'utf8');
     //console.log(user_list);
-    var user_string = netid + ' ' + uid + ' ' + scode;
+    var user_string = netid + ' ' + uid + ' ';
     //console.log(user_string);
     if (0 <= user_list.search(user_string)) {
         return true;
@@ -86,11 +85,10 @@ exports.submit = function(req, res) {
     var query = url_parts.query;
     var netid = (typeof query.netid === "undefined")? "" : query.netid;
     var uid = (typeof query.uid === "undefined")? "" : query.uid;
-    var scode = (typeof query.scode === "undefined")? "" : query.scode;
     var lab_num = extract_lab_num(query.lab);
     //console.log('submit lab_num: ', lab_num);
     if (lab_num >= lab_id_min && lab_num <= lab_id_max) {
-        res.render('submit', {title: query.lab, netid: netid, uid: uid, scode: scode});
+        res.render('submit', {title: query.lab, netid: netid, uid: uid});
     }else{
         error(/*req, */res, 200, 'Invalid Lab Number');
     }
@@ -108,7 +106,7 @@ exports.upload = function(req, res) {
         return;
     }
 
-    if (!to_validate_user(req.body.netid, req.body.uid, req.body.scode)) {
+    if (!to_validate_user(req.body.netid, req.body.uid)) {
         error(/*req, */res, 200, 'Invalid User');
         return;
     }

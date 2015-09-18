@@ -8,17 +8,17 @@ import string
 
 fptr = open('studentinfo.txt', 'r')
 out_userlist = open('userlist.txt', 'w')
-out_emaillist = open('emaillist.txt', 'w')
+#out_emaillist = open('emaillist.txt', 'w')
 stu_list = [];
 line = fptr.readline()
 while (len(line) != 0):
 	seg = line.split()
 	uid = seg[0]
 	netid = seg[1].split('@')[0]
-	scode = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(5)])
-	out_userlist.write('%s %s %s\n'%(netid, uid, scode))
-	out_emaillist.write('%s\n'%(seg[1]))
+	#scode = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(5)])
+	out_userlist.write('%s %s \n'%(netid, uid))
+	#out_emaillist.write('%s\n'%(seg[1]))
 	line = fptr.readline()
 fptr.close()
 out_userlist.close()
-out_emaillist.close()
+#out_emaillist.close()
